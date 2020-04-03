@@ -61,8 +61,11 @@ class Client:
     def company_profile(self, **params):
         return self._get("stock/profile", data=params)
 
-    def ceo_compensation(self, **params):
-        return self._get("stock/ceo-compensation", data=params)
+    def executive(self, **params):
+        return self._get("stock/executive", data=params)
+
+    # def ceo_compensation(self, **params):
+    #     return self._get("stock/ceo-compensation", data=params)
 
     def recommendation(self, **params):
         return self._get("stock/recommendation", data=params)
