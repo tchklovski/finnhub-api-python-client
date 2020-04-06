@@ -49,7 +49,7 @@ class Client:
             raise FinnhubAPIException(response)
 
         if self._response_is_csv(response):
-            return response.text()
+            return response.text
 
         try:
             return response.json()
