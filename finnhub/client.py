@@ -47,10 +47,18 @@ class Client:
     def _handle_response(self, response):
         if not str(response.status_code).startswith('2'):
             raise FinnhubAPIException(response)
+
+        if self._response_is_csv(response):
+            return response.text
+
         try:
             return response.json()
         except ValueError:
             raise FinnhubRequestException("Invalid Response: {}".format(response.text))
+
+    @staticmethod
+    def _response_is_csv(response) -> bool:
+        return '/stock/tick' in response.request.url
 
     def _get(self, path, **kwargs):
         return self._request_api('get', path, **kwargs)
@@ -98,7 +106,8 @@ class Client:
         return self._get("stock/candle", data=params)
 
     def stock_tick(self, **params):
-        return self._get("stock/tick", data=params)
+        # NB: data will be returned as CSV
+        return self._request_api("get", "stock/tick", data=params)
 
     def forex_exchange(self):
         return self._get("forex/exchange")
